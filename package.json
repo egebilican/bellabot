@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run api",
+    "start": "node dist/api.js",
     "dev": "ts-node --esm --watch bella.ts",
     "api": "node --loader ts-node/esm api.ts",
     "api:dev": "node --loader ts-node/esm --watch api.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "postinstall": "npm run build"
   },
   "keywords": [],
   "author": "",
