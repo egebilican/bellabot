@@ -108,24 +108,40 @@ app.post("/api/book-vegan-bowl", async (req: any, res: any) => {
     }
 
     const result = await page.evaluate(() => {
-      const cards = Array.from(
-        document.querySelectorAll('[class*="JaAcgl6Q1jV1fKSLOL8Hw"]')
-      );
-      const veganBowlCards: Array<{ index: number; productName: string }> = [];
+      const veganBowlCards: Array<{ cardId: string; productName: string }> = [];
 
-      cards.forEach((card: any, index: number) => {
+      // Generate card IDs directly in browser context
+      const ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      const categories = [
+        "cucina_italiana",
+        "lunch_classics",
+        "salads_&_bowls",
+        "sandwich_&_wraps",
+        "weekly_special",
+      ];
+
+      const cardIds = ids.flatMap((id) =>
+        categories.map((category) => category + "_" + id)
+      );
+
+      cardIds.forEach((cardId: string) => {
+        const card = document.getElementById(cardId);
+        if (!card) return;
+
         const cardText = card.textContent?.toLowerCase() || "";
         if (cardText.includes("vegan bowl")) {
           const buyButton = card.querySelector(
             'button[class*="m92yzui_kJE2ejTj4Gf5N"]'
           );
           if (buyButton) {
+            const productName =
+              card
+                .querySelector('div[class*="COpa-sL0HU6NqaYNgIACA"]')
+                ?.textContent?.trim() || "Unknown Product";
+
             veganBowlCards.push({
-              index,
-              productName:
-                card
-                  .querySelector('div[class*="COpa-sL0HU6NqaYNgIACA"]')
-                  ?.textContent?.trim() || "Unknown Product",
+              cardId,
+              productName,
             });
             (buyButton as HTMLButtonElement).click();
           }

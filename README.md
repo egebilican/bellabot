@@ -6,6 +6,7 @@ An automated bot for ordering vegetarian and vegan meals from Bella Bona. Built 
 
 - **Automated Login**: Securely logs into Bella Bona using environment variables
 - **Vegetarian/Vegan Detection**: Finds all vegetarian and vegan options on the menu
+- **Dual Price Detection**: Captures both regular and discounted prices
 - **Auto-Booking**: Automatically books vegan bowls
 - **Order Management**: Check order status and cancel orders
 - **REST API**: Full API endpoints for all functionality
@@ -60,10 +61,36 @@ The API will be available at `http://localhost:3000`
 
 ## 🌐 Usage Examples
 
-### Get Vegetarian Options
+### Get Vegetarian Options (with both prices)
 
 ```bash
 curl http://localhost:3000/api/vegetarian-options
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "count": 3,
+  "items": [
+    {
+      "productName": "Vegan Buddha Bowl",
+      "label": "vegan",
+      "imageSrc": "https://example.com/image.jpg",
+      "regularPrice": "12.50 €",
+      "discountedPrice": "10.00 €",
+      "hasDiscount": true
+    },
+    {
+      "productName": "Vegetarian Mediterranean",
+      "label": "vegetarian",
+      "imageSrc": "https://example.com/image2.jpg",
+      "regularPrice": "11.00 €",
+      "hasDiscount": false
+    }
+  ]
+}
 ```
 
 ### Book Vegan Bowl
